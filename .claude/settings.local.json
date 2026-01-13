@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm cache clean:*)",
+      "Bash(printf:*)",
+      "Bash(npx create-next-app:*)"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
+@theme {
+  --color-primary: #2563eb; /* blue-600 */
+  --color-success: #16a34a; /* green-600 */
+  --color-error: #dc2626;   /* red-600 */
+
+  --spacing-4: 1rem;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+
+  --font-inter: var(--font-inter);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #111827; /* gray-900 */
+  --surface: #f9fafb;    /* gray-50 */
+}
+
+.dark {
+  --background: #111827; /* gray-900 */
+  --foreground: #f9fafb; /* gray-50 */
+  --surface: #1f2937;    /* gray-800 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --font-sans: var(--font-inter);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
