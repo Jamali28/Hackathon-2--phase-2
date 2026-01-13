@@ -5,7 +5,9 @@
  * Handles common error status codes (401, 404, 422).
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+// Use Next.js API routes as proxy to validate Better Auth session
+// and forward requests to FastAPI backend
+const API_BASE_URL = "/api";
 
 type RequestOptions = RequestInit & {
   params?: Record<string, string>;
@@ -19,24 +21,21 @@ export async function apiClient<T>(
   endpoint: string,
   { params, ...options }: RequestOptions = {}
 ): Promise<T> {
-  // ... existing URL construction ...
-  const url = new URL(`${API_BASE_URL}${endpoint}`);
+  // Map the API endpoint to the proxy route
+  // e.g., /tasks -> /api/tasks, /tasks/1 -> /api/tasks/1
+  const proxyEndpoint = endpoint;
+  const url = new URL(`${API_BASE_URL}${proxyEndpoint}`);
   if (params) {
     Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])
     );
   }
 
-  // 2. Prepare headers with JWT
+  // 2. Prepare headers
   const headers = new Headers(options.headers);
 
-  // Fetch token using the Better Auth client properly
-  const session = await authClient.getSession();
-  const token = session.data?.session.token;
-
-  if (token && !headers.has("Authorization")) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
+  // No authentication needed here since the proxy route will handle it
+  // The Next.js API route will validate Better Auth session and forward to backend
 
   // ... rest of the function ...
 
@@ -45,6 +44,7 @@ export async function apiClient<T>(
   }
 
   // 3. Execute request
+  // The proxy route will handle authentication and cookies
   const response = await fetch(url.toString(), {
     ...options,
     headers,
@@ -52,15 +52,17 @@ export async function apiClient<T>(
 
   // 4. Handle errors
   if (!response.ok) {
-    if (response.status === 401) {
-      // Handle unauthorized (redirect to login if on client)
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
-    }
+    // Don't redirect automatically, let the caller handle it
+    // This gives the UI more control over error handling
+    const errorData = await response.json().catch(() => ({
+      detail: `HTTP ${response.status}: ${response.statusText}`,
+      status: response.status
+    }));
 
-    const errorData = await response.json().catch(() => ({ detail: "An unknown error occurred" }));
-    throw new Error(errorData.detail || response.statusText);
+    // Log the error for debugging
+    console.error(`API Error ${response.status}:`, errorData);
+
+    throw new Error(errorData.detail || `HTTP ${response.status}: ${response.statusText}`);
   }
 
   // 5. Parse response

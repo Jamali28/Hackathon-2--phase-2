@@ -10,6 +10,9 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
     },
+    session: {
+        expiresIn: 7 * 24 * 60 * 60, // 7 days in seconds
+    },
     // Explicitly disabling hooks that might interfere if not configured
     databaseHooks: {
     },

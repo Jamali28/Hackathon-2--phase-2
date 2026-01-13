@@ -24,7 +24,12 @@ app = FastAPI(
 )
 
 # Configure CORS
-origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+default_origins = ["http://localhost:3000", "http://localhost:3001", "https://localhost:3000", "https://localhost:3001"]
+additional_origins = os.getenv("CORS_ORIGINS", "").split(",")
+all_origins = default_origins + [origin for origin in additional_origins if origin.strip()]
+
+# Remove duplicates while preserving order
+origins = list(dict.fromkeys(all_origins))
 
 app.add_middleware(
     CORSMiddleware,

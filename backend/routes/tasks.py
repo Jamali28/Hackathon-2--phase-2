@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select, desc, asc
 from datetime import datetime, timezone
@@ -14,6 +14,7 @@ router = APIRouter(prefix="/tasks")
 async def list_tasks(
     status: Optional[str] = Query("all", enum=["all", "pending", "completed"]),
     sort: Optional[str] = Query("created", enum=["created", "title"]),
+    request: Request = Depends(),
     session: AsyncSession = Depends(get_session),
     current_user_id: str = Depends(get_current_user)
 ):
@@ -38,6 +39,7 @@ async def list_tasks(
 @router.post("/", response_model=TaskRead, status_code=status.HTTP_201_CREATED)
 async def create_task(
     task_data: TaskCreate,
+    request: Request = Depends(),
     session: AsyncSession = Depends(get_session),
     current_user_id: str = Depends(get_current_user)
 ):
@@ -54,6 +56,7 @@ async def create_task(
 @router.get("/{id}", response_model=TaskRead)
 async def get_task(
     id: int,
+    request: Request = Depends(),
     session: AsyncSession = Depends(get_session),
     current_user_id: str = Depends(get_current_user)
 ):
@@ -70,6 +73,7 @@ async def get_task(
 async def update_task(
     id: int,
     task_data: TaskUpdate,
+    request: Request = Depends(),
     session: AsyncSession = Depends(get_session),
     current_user_id: str = Depends(get_current_user)
 ):
@@ -94,6 +98,7 @@ async def update_task(
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task(
     id: int,
+    request: Request = Depends(),
     session: AsyncSession = Depends(get_session),
     current_user_id: str = Depends(get_current_user)
 ):
@@ -112,6 +117,7 @@ async def delete_task(
 @router.patch("/{id}/complete", response_model=TaskRead)
 async def toggle_task_completion(
     id: int,
+    request: Request = Depends(),
     session: AsyncSession = Depends(get_session),
     current_user_id: str = Depends(get_current_user)
 ):
