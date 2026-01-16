@@ -16,11 +16,5 @@ export const auth = betterAuth({
     // Explicitly disabling hooks that might interfere if not configured
     databaseHooks: {
     },
-    plugins: [
-        jwt({
-            issuer: "todo-app",
-            expiresIn: "7d",
-            secret: process.env.BETTER_AUTH_SECRET!,
-        }),
-    ],
+    plugins: [],
 });

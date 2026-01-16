@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm cache clean:*)",
       "Bash(printf:*)",
-      "Bash(npx create-next-app:*)"
+      "Bash(npx create-next-app:*)",
+      "Bash(powershell -Command \"Stop-Process -Id 15120 -Force\")",
+      "Bash(npm run build)"
     ]
   }
 }

@@ -68,7 +68,7 @@ export default function DashboardPage() {
   const handleSubmitTask = async (data: any) => {
     try {
       if (editingTask) {
-        const updatedTask = await api.put<Task>(`/tasks/${editingTask.id}`, data);
+        const updatedTask = await api.patch<Task>(`/tasks/${editingTask.id}`, data);
         setTasks(tasks.map(t => t.id === editingTask.id ? updatedTask : t));
         toast("Task updated successfully", "success");
       } else {
