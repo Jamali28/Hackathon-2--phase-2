@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status') || 'all';
     const sort = searchParams.get('sort') || 'created';
 
-    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/tasks?status=${status}&sort=${sort}`;
+    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/tasks?status=${status}&sort=${sort}`;
 
     // Validate session using our server-side validation function
     const session = await validateSessionServer();
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/tasks`;
+    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/tasks`;
 
     // Validate session using our server-side validation function
     const session = await validateSessionServer();
@@ -95,7 +95,7 @@ export async function PUT(request: NextRequest) {
     const taskId = pathParts[pathParts.length - 1];
 
     const body = await request.json();
-    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/tasks/${taskId}`;
+    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskId}`;
 
     // Validate session using our server-side validation function
     const session = await validateSessionServer();
@@ -141,7 +141,7 @@ export async function PATCH(request: NextRequest) {
     const action = pathParts[pathParts.length - 1]; // "complete"
     const taskId = pathParts[pathParts.length - 2]; // "1"
 
-    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/tasks/${taskId}/${action}`;
+    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskId}/${action}`;
 
     // Validate session using our server-side validation function
     const session = await validateSessionServer();
@@ -185,7 +185,7 @@ export async function DELETE(request: NextRequest) {
     const pathParts = url.pathname.split('/').filter(part => part !== '');
     const taskId = pathParts[pathParts.length - 1];
 
-    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/tasks/${taskId}`;
+    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskId}`;
 
     // Validate session using our server-side validation function
     const session = await validateSessionServer();

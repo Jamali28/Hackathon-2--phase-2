@@ -8,6 +8,11 @@ const authRoutes = ["/login", "/signup"];
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Skip middleware for API routes (including auth routes)
+  if (pathname.startsWith('/api')) {
+    return NextResponse.next();
+  }
+
   // Check for the session token in cookies
   // Note: better-auth usually sets 'better-auth.session_token' (underscore or hyphen depends on config)
   // We check both specific variations to be safe

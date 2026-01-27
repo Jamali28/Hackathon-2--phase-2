@@ -12,6 +12,11 @@ export const auth = betterAuth({
     session: {
         expiresIn: 7 * 24 * 60 * 60, // 7 days in seconds
     },
+    socialProviders: {}, // Empty social providers config
+    // Allow localhost for development
+    origin: process.env.NODE_ENV === 'production'
+        ? process.env.BETTER_AUTH_URL
+        : 'http://localhost:3000',
     // Explicitly disabling hooks that might interfere if not configured
     databaseHooks: {
     },
