@@ -2,7 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    serverActions: true,
+    serverActions: {
+      bodySizeLimit: "2mb",
+    },
   },
   // Enable compression for production
   compress: true,
@@ -11,9 +13,7 @@ const nextConfig: NextConfig = {
     config.resolve.fallback = { ...config.resolve.fallback, fs: false };
     return config;
   },
-  // Add empty turbopack config as suggested by the error message
-  // This should resolve the Turbopack/webpack conflict
-  turbopack: {},
+  // Remove turbopack config as it may conflict with experimental server actions
 };
 
 export default nextConfig;

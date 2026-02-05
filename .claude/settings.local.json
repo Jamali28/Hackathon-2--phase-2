@@ -6,7 +6,8 @@
       "Bash(npx create-next-app:*)",
       "Bash(powershell -Command \"Stop-Process -Id 15120 -Force\")",
       "Bash(npm run build)",
-      "Bash(git branch -d 001-initial-setup 002-web-features)"
+      "Bash(git branch -d 001-initial-setup 002-web-features)",
+      "Bash(node -e:*)"
     ]
   }
 }
