@@ -13,18 +13,8 @@ export const auth = betterAuth({
         expiresIn: 7 * 24 * 60 * 60, // 7 days in seconds
     },
     socialProviders: {}, // Empty social providers config
-    // Ensure proper URL format for origin
-    origin: () => {
-        if (process.env.BETTER_AUTH_URL) {
-            // Ensure the URL has the protocol
-            const url = process.env.BETTER_AUTH_URL;
-            if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                return `https://${url}`;
-            }
-            return url;
-        }
-        return 'http://localhost:3000';
-    },
+    // Set origin to a placeholder during build, actual value comes from env vars
+    origin: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
     // Explicitly disabling hooks that might interfere if not configured
     databaseHooks: {
     },
