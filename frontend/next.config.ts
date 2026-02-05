@@ -8,12 +8,13 @@ const nextConfig: NextConfig = {
   },
   // Enable compression for production
   compress: true,
-  // Webpack configuration for node-specific packages
+  // Turbopack configuration to handle node-specific packages
+  turbopack: {},
+  // Webpack configuration (will be ignored in Turbopack mode but kept for compatibility)
   webpack: (config) => {
     config.resolve.fallback = { ...config.resolve.fallback, fs: false };
     return config;
   },
-  // Remove turbopack config as it may conflict with experimental server actions
 };
 
 export default nextConfig;
