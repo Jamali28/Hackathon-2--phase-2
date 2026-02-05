@@ -8,13 +8,14 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,
+        requireEmailVerification: false, // Set to false for easier testing
     },
     session: {
         expiresIn: 7 * 24 * 60 * 60, // 7 days in seconds
     },
     socialProviders: {}, // Empty social providers config
-    // Set origin to a placeholder during build, actual value comes from env vars
-    origin: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    // Use the environment variable directly - Vercel should populate it during build
+    origin: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
     // Explicitly disabling hooks that might interfere if not configured
     databaseHooks: {
     },
