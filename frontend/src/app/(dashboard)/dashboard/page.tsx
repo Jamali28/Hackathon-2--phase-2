@@ -42,7 +42,7 @@ export default function DashboardPage() {
   }, [fetchTasks]);
 
   const filteredTasks = tasks.filter((t) =>
-    t.title.toLowerCase().includes(searchQuery.toLowerCase())
+    t.title && t.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleToggleTask = async (id: string) => {
@@ -73,7 +73,13 @@ export default function DashboardPage() {
         toast("Task updated successfully", "success");
       } else {
         const newTask = await api.post<Task>("/tasks", data);
-        setTasks([newTask, ...tasks]);
+        // Ensure the new task has all required fields with defaults if needed
+        const taskWithDefaults = {
+          ...newTask,
+          priority: newTask.priority || "Medium",
+          createdAt: newTask.createdAt || new Date().toISOString(),
+        };
+        setTasks([taskWithDefaults, ...tasks]);
         toast("New task created", "success");
       }
       setIsModalOpen(false);

@@ -15,9 +15,15 @@ export const auth = betterAuth({
     },
     socialProviders: {}, // Empty social providers config
     // Flexible origin configuration that works in various environments
-    origin: process.env.NODE_ENV === 'production'
-        ? process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://example.com'
-        : 'http://localhost:3000',
+    origin: process.env.BETTER_AUTH_URL
+        ? process.env.BETTER_AUTH_URL.startsWith('http')
+            ? process.env.BETTER_AUTH_URL
+            : `https://${process.env.BETTER_AUTH_URL}`
+        : process.env.NEXT_PUBLIC_APP_URL
+            ? process.env.NEXT_PUBLIC_APP_URL.startsWith('http')
+                ? process.env.NEXT_PUBLIC_APP_URL
+                : `https://${process.env.NEXT_PUBLIC_APP_URL}`
+            : 'http://localhost:3000',
     // Explicitly disabling hooks that might interfere if not configured
     databaseHooks: {
     },
